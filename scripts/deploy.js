@@ -5,7 +5,7 @@ const main = async () => {
   const contract = await contractFactory.deploy();
   await contract.waitForDeployment();
 
-  console.log("Library deployed to:", contract.target);
+  console.log("Library deployed to:", await contract.getAddress());
 };
 
 const runMain = async () => {

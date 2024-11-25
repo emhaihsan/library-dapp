@@ -332,59 +332,64 @@ const Home: NextPage = () => {
                   </button>
                 </div>
               </div>
-              <div className="flex flex-col justify-center items-center">
-                <div className="font-semibold text-lg text-center mb-4">
+              <div className="flex flex-col justify-center items-center space-y-8">
+                <div className="text-2xl font-bold text-center bg-gradient-to-r from-[#f1c232] to-[#6a50aa] text-transparent bg-clip-text">
                   Book List
                 </div>
                 <button
-                  className="text-xl font-bold py-3 px-12 bg-[#f1c232] rounded-lg mb-10 hover:scale-105 transition duration-500 ease-in-out flex items-center justify-center min-w-[200px]"
+                  className="group relative px-12 py-4 text-xl font-bold bg-gradient-to-r from-[#f1c232] to-[#6a50aa] rounded-lg hover:scale-105 transition-all duration-300 ease-in-out min-w-[200px]"
                   onClick={getBooks}
                   disabled={isLoading}
                 >
-                  {isLoading ? <LoadingSpinner /> : "Get Books"}
+                  <div className="absolute inset-0 w-full h-full bg-white/10 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="relative flex items-center justify-center gap-2">
+                    {isLoading ? <LoadingSpinner /> : "Get Books"}
+                  </span>
                 </button>
-                {booksUnfinished.length > 0 ? (
-                  <div className="font-semibold text-lg text-center mb-4">
-                    Books Unfinished ({booksUnfinished.length})
+
+                {booksUnfinished.length > 0 && (
+                  <div className="w-full">
+                    <h2 className="text-xl font-semibold text-center mb-6 text-gray-300">
+                      Books Unfinished ({booksUnfinished.length})
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+                      {booksUnfinished.map((book) => (
+                        <Book
+                          key={book.id}
+                          id={parseInt(book.id)}
+                          name={book.title}
+                          year={parseInt(book.year)}
+                          author={book.author}
+                          finished={book.finished.toString()}
+                          clickBookFinished={clickBookFinished}
+                          onEdit={editBook}
+                        />
+                      ))}
+                    </div>
                   </div>
-                ) : (
-                  <div></div>
                 )}
-                <div className="flex flex-row flex-wrap justify-center">
-                  {booksUnfinished.map((book) => (
-                    <Book
-                      key={book.id}
-                      id={parseInt(book.id)}
-                      name={book.title}
-                      year={parseInt(book.year)}
-                      author={book.author}
-                      finished={book.finished.toString()}
-                      clickBookFinished={clickBookFinished}
-                      onEdit={editBook}
-                    />
-                  ))}
-                </div>
-                {booksFinished.length > 0 ? (
-                  <div className="font-semibold text-lg text-center mb-4">
-                    Books Finished ({booksFinished.length})
+
+                {booksFinished.length > 0 && (
+                  <div className="w-full">
+                    <h2 className="text-xl font-semibold text-center mb-6 text-gray-300">
+                      Books Finished ({booksFinished.length})
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+                      {booksFinished.map((book) => (
+                        <Book
+                          key={book.id}
+                          id={parseInt(book.id)}
+                          name={book.title}
+                          year={parseInt(book.year)}
+                          author={book.author}
+                          finished={book.finished.toString()}
+                          clickBookFinished={clickBookFinished}
+                          onEdit={editBook}
+                        />
+                      ))}
+                    </div>
                   </div>
-                ) : (
-                  <div></div>
                 )}
-                <div className="flex flex-row flex-wrap justify-center">
-                  {booksFinished.map((book) => (
-                    <Book
-                      key={book.id}
-                      id={parseInt(book.id)}
-                      name={book.title}
-                      year={parseInt(book.year)}
-                      author={book.author}
-                      finished={book.finished.toString()}
-                      clickBookFinished={clickBookFinished}
-                      onEdit={editBook}
-                    />
-                  ))}
-                </div>
               </div>
             </div>
           )}
