@@ -21,6 +21,7 @@ contract Library {
     // Event to be emitted when a new book is added
     event AddBook(address recipient, uint bookId);
     event SetFinished(uint bookId, bool finished);
+    event EditBook(uint bookId, string name, uint16 year, string author);
 
     // Function to add a new book to the library
     // Only the caller of the function can add a book
@@ -76,6 +77,20 @@ contract Library {
         if (bookToOwner[bookId] == msg.sender) {
             bookList[bookId].finished = finished;
             emit SetFinished(bookId, finished);
+        }
+    }
+
+    function editBook(
+        uint bookId,
+        string memory name,
+        uint16 year,
+        string memory author
+    ) external {
+        if (bookToOwner[bookId] == msg.sender) {
+            bookList[bookId].title = name;
+            bookList[bookId].year = year;
+            bookList[bookId].author = author;
+            emit EditBook(bookId, name, year, author);
         }
     }
 }
