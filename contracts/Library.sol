@@ -86,11 +86,10 @@ contract Library {
         uint16 year,
         string memory author
     ) external {
-        if (bookToOwner[bookId] == msg.sender) {
-            bookList[bookId].title = name;
-            bookList[bookId].year = year;
-            bookList[bookId].author = author;
-            emit EditBook(bookId, name, year, author);
-        }
+        require(bookToOwner[bookId] == msg.sender, "Not book owner");
+        bookList[bookId].title = name;
+        bookList[bookId].year = year;
+        bookList[bookId].author = author;
+        emit EditBook(bookId, name, year, author);
     }
 }

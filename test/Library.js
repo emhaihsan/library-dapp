@@ -104,4 +104,60 @@ describe("Library", function () {
         .withArgs(bookId, true);
     });
   });
+
+  describe("Edit Book", function () {
+    it("should edit an existing book", async function () {
+      const bookId = 0;
+      const updatedBook = {
+        title: "Updated Book Title",
+        year: 2024,
+        author: "Updated Author",
+      };
+
+      await expect(
+        library.editBook(
+          bookId,
+          updatedBook.title,
+          updatedBook.year,
+          updatedBook.author
+        )
+      )
+        .to.emit(library, "EditBook")
+        .withArgs(
+          bookId,
+          updatedBook.title,
+          updatedBook.year,
+          updatedBook.author
+        );
+
+      // Verify the book was updated
+      const unfinishedBooks = await library.getUnfinishedBooks();
+      const updatedBookFromChain = unfinishedBooks[0];
+
+      expect(updatedBookFromChain.title).to.equal(updatedBook.title);
+      expect(updatedBookFromChain.year).to.equal(updatedBook.year);
+      expect(updatedBookFromChain.author).to.equal(updatedBook.author);
+    });
+
+    it("should only allow book owner to edit", async function () {
+      const [_, otherAccount] = await ethers.getSigners();
+      const bookId = 0;
+      const updatedBook = {
+        title: "Updated Book Title",
+        year: 2024,
+        author: "Updated Author",
+      };
+
+      await expect(
+        library
+          .connect(otherAccount)
+          .editBook(
+            bookId,
+            updatedBook.title,
+            updatedBook.year,
+            updatedBook.author
+          )
+      ).to.be.revertedWith("Not book owner");
+    });
+  });
 });

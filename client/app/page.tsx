@@ -5,6 +5,7 @@ import { contractAddress } from "../config";
 import Library from "../abi/Library.json";
 import { NextPage } from "next";
 import Book from "./components/Book.js";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 interface BookType {
   id: string;
@@ -336,11 +337,11 @@ const Home: NextPage = () => {
                   Book List
                 </div>
                 <button
-                  className="text-xl font-bold py-3 px-12 bg-[#f1c232] rounded-lg mb-10 hover:scale-105 transition duration-500 ease-in-out"
+                  className="text-xl font-bold py-3 px-12 bg-[#f1c232] rounded-lg mb-10 hover:scale-105 transition duration-500 ease-in-out flex items-center justify-center min-w-[200px]"
                   onClick={getBooks}
                   disabled={isLoading}
                 >
-                  {isLoading ? "Loading..." : "Get Books"}
+                  {isLoading ? <LoadingSpinner /> : "Get Books"}
                 </button>
                 {booksUnfinished.length > 0 ? (
                   <div className="font-semibold text-lg text-center mb-4">
